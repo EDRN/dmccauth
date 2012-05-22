@@ -77,6 +77,18 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
     }
 
     /**
+     * Tell if a username + password combo is authentic, as far as the DMCC is concerned.
+     *
+     * @param username The username to authenticate.
+     * @param password The password for the username.
+     * @return True if authentic and valid, false if not.
+     */
+    public boolean isAuthentic(String username, String password) throws Exception {
+        // TODO: implement this as a web service call
+        return false;
+    }
+
+    /**
      * Intercept the "bind" call and attempt to validate the password with the DMCC.  If success,
      * no need to continue the chain.  If not, then perhaps something else in the chain can do it.
      *
@@ -96,7 +108,8 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
             String uid = rdn.getNormValue();
             String password = StringTools.utf8ToString(opContext.getCredentials());
             LOG.debug("Got uid '{}' with password 'NOPE! Not gonna show ya!'", uid);
-            // HERE.
+            if (!this.isAuthentic(uid, password))
+                throw new DMCCAuthenticationException("Uid '" + uid + "' and password not valid per DMCC");
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
