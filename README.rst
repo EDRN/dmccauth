@@ -9,5 +9,8 @@
     
       <s:bean class='gov.nasa.jpl.edrn.dmcc.auth.DMCCAuthenticationInterceptor'/> 
 
+    Assuming that ``s`` = http://www.springframework.org/schema/beans.
+
 4.  Restart Apache™ DS.
+
 
