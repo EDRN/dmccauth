@@ -9,9 +9,9 @@ RESERVED. U.S. Government Sponsorship acknowledged.
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.nasa.jpl.edrn.dmcc</groupId>
     <artifactId>dmccauth</artifactId>
+    <packaging>jar</packaging>
     <version>0.0.0</version>
     <name>EDRN DMCC Authentication for Apache™ Directory Server</name>
-    <packaging>jar</packaging>
     <properties/>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -19,6 +19,7 @@ RESERVED. U.S. Government Sponsorship acknowledged.
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.4</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
@@ -31,6 +32,16 @@ RESERVED. U.S. Government Sponsorship acknowledged.
             <groupId>org.apache.directory.server</groupId>
             <artifactId>apacheds-core-api</artifactId>
             <version>1.5.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.directory.shared</groupId>
+            <artifactId>shared-all</artifactId>
+            <version>0.9.19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.directory.shared</groupId>
+            <artifactId>shared-ldap</artifactId>
+            <version>0.9.19</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
