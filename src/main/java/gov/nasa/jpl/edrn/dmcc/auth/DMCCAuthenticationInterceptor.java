@@ -98,6 +98,9 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
      */
     @Override
     public void bind(NextInterceptor next, BindOperationContext opContext) throws Exception {
+        // TODO: to be really anal retentive, we should check the entire DN and ensure it makes sense
+        // for the DMCC to authenticate, on the off chance that "uid=dcrichto,ou=Sales,o=Amazon,c=US"
+        // happens to authenticate with our LDAP server.
         try {
             LOG.debug("★ In DMCCAuthenticationInterceptor's bind");
             DN dn = opContext.getDn();
