@@ -25,9 +25,34 @@ RESERVED. U.S. Government Sponsorship acknowledged.
                     <target>1.5</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>2.2.3</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <configuration>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>https://www.compass.fhcrc.org/edrn_ws/ws_newcompass.asmx?wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>org.apache.directory.server</groupId>
+            <artifactId>apacheds-core</artifactId>
+            <version>1.5.7</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.directory.server</groupId>
             <artifactId>apacheds-core-api</artifactId>
@@ -42,6 +67,16 @@ RESERVED. U.S. Government Sponsorship acknowledged.
             <groupId>org.apache.directory.shared</groupId>
             <artifactId>shared-ldap</artifactId>
             <version>0.9.19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>2.2.3</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
