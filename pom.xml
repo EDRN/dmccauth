@@ -48,6 +48,21 @@ RESERVED. U.S. Government Sponsorship acknowledged.
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>bin</descriptorRef>
+                    </descriptorRefs>
+                    <executions>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </executions>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
