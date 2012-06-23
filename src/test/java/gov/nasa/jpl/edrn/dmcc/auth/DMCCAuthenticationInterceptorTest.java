@@ -15,4 +15,9 @@ public class DMCCAuthenticationInterceptorTest {
     public void testSomething() throws Throwable {
         assertEquals(1, 1);
     }
+    @Test
+    public void testDefaultWebServiceURLValue() throws Throwable {
+        DMCCAuthenticationInterceptor i = new DMCCAuthenticationInterceptor();
+        assertEquals("https://www.compass.fhcrc.org/edrn_ws/ws_newcompass.asmx?WSDL", i.getAuthWebServiceURL());
+    }
 }
