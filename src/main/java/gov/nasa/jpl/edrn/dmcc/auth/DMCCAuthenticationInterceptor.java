@@ -40,7 +40,7 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
     private static final Logger LOG = LoggerFactory.getLogger(DMCCAuthenticationInterceptor.class);
 
     /** Where the authentication web service lives */
-    private String authWebServiceURL = "https://www.compass.fhcrc.org/edrn_ws/ws_newcompass.asmx";
+    private String authWebServiceURL = "https://www.compass.fhcrc.org/edrn_ws/ws_newcompass.asmx?WSDL";
 
     /** What RDN attribute type to look for for user IDs. */
     private String rdnAttributeType = "0.9.2342.19200300.100.1.1";

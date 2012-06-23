@@ -8,6 +8,11 @@ Informatics Center's issue tracker at:
     
 Thanks, Object Oriented Data Technology, for hosting it.
 
+1.0.2 — Defaults Cleanup
+------------------------
+
+• This release fixes the default URL for the EDRN DMCC web service.
+
 
 1.0.1 — Release Cleanup
 -----------------------
