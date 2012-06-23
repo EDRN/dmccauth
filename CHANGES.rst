@@ -9,6 +9,13 @@ Informatics Center's issue tracker at:
 Thanks, Object Oriented Data Technology, for hosting it.
 
 
+1.0.1 — Release Cleanup
+-----------------------
+
+• This release adds an assembly to the project so that distributions can
+  be easily made.
+
+
 1.0.0 — Initial Release
 -----------------------
 
