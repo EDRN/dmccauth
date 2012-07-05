@@ -14,6 +14,7 @@ Thanks, Object Oriented Data Technology, for hosting it.
 • This release uses ApacheDS 2.0 (and Apache Shared LDAP API 1.0) as its
   basis. This is necessary for CA-960, due to a bug in Apache DS; see
   https://issues.apache.org/jira/browse/DIRSERVER-1548.
+• This release also attempts to use Maven's automated release mechanisms.
 
 
 1.0.2 — Defaults Cleanup
