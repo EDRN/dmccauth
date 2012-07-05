@@ -137,7 +137,7 @@ RESERVED. U.S. Government Sponsorship acknowledged.
         <repository>
             <id>oodt-private-dist</id>
             <name>JPL OODT Private Distributions</name>
-            <url>scp://oodt.jpl.nasa.gov/usr/local/apache2/htdocs/dist/dmccauth</url>
+            <url>scpexe://oodt.jpl.nasa.gov/usr/local/apache2/htdocs/dist/dmccauth</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
         <downloadUrl>http://oodt.jpl.nasa.gov/dist/dmccauth</downloadUrl>
