@@ -3,7 +3,7 @@
 
 package gov.nasa.jpl.edrn.dmcc.auth;
 
-import org.apache.directory.shared.ldap.exception.LdapAuthenticationException;
+import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationException;
 
 /** Exception indicating a problem while trying to authenticate with the DMCC.
  */

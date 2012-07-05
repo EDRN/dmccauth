@@ -8,6 +8,14 @@ Informatics Center's issue tracker at:
     
 Thanks, Object Oriented Data Technology, for hosting it.
 
+1.1.0 — Substrate Upgrade
+-------------------------
+
+• This release uses ApacheDS 2.0 (and Apache Shared LDAP API 1.0) as its
+  basis. This is necessary for CA-960, due to a bug in Apache DS; see
+  https://issues.apache.org/jira/browse/DIRSERVER-1548.
+
+
 1.0.2 — Defaults Cleanup
 ------------------------
 

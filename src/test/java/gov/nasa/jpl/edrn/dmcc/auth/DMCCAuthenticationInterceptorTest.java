@@ -9,12 +9,8 @@ import org.junit.Test;
 /** Unit test for the DMCC authentication interceptor.
  */
 public class DMCCAuthenticationInterceptorTest {
-    /** Test something—er, well, some THING.
+    /** Ensure the default authentication web service URL is what we expect.
      */
-    @Test
-    public void testSomething() throws Throwable {
-        assertEquals(1, 1);
-    }
     @Test
     public void testDefaultWebServiceURLValue() throws Throwable {
         DMCCAuthenticationInterceptor i = new DMCCAuthenticationInterceptor();
