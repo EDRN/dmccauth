@@ -8,13 +8,13 @@ RESERVED. U.S. Government Sponsorship acknowledged.
     <groupId>gov.nasa.jpl.edrn.dmcc</groupId>
     <artifactId>dmccauth</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <name>EDRN DMCC Authentication for Apache™ Directory Server</name>
     <properties />
     <scm>
-        <connection>scm:svn:http://tumor.jpl.nasa.gov/repo/edrn/security/dmccauth/trunk</connection>
-        <developerConnection>scm:svn:http://tumor.jpl.nasa.gov/repo/edrn/security/dmccauth/trunk</developerConnection>
-        <url>http://tumor.jpl.nasa.gov/vc/svn/edrn/security/dmccauth/trunk</url>
+        <connection>scm:svn:http://tumor.jpl.nasa.gov/repo/edrn/security/dmccauth/tags/1.1.1</connection>
+        <developerConnection>scm:svn:http://tumor.jpl.nasa.gov/repo/edrn/security/dmccauth/tags/1.1.1</developerConnection>
+        <url>http://tumor.jpl.nasa.gov/vc/svn/edrn/security/dmccauth/tags/1.1.1</url>
     </scm>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
