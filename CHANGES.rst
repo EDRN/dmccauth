@@ -8,6 +8,14 @@ Informatics Center's issue tracker at:
     
 Thanks, Object Oriented Data Technology, for hosting it.
 
+1.1.1 — #&*% the DMCC
+---------------------
+
+• CA-994 - If DMCC web service is down, Apache DS immediately gives up; should
+  try its own database
+• CA-995 - DMCC changed XML namespace of its web service
+
+
 1.1.0 — Substrate Upgrade
 -------------------------
 

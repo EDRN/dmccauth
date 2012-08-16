@@ -19,8 +19,8 @@ import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.util.Strings;
 
 // DMCCrap
-import org.fhcrc.perdy.edrn_ws.ws_newcompass.WsNewcompass;
-import org.fhcrc.perdy.edrn_ws.ws_newcompass.WsNewcompassSoap;
+import org.fhcrc.compass.edrn_ws.ws_newcompass.WsNewcompass;
+import org.fhcrc.compass.edrn_ws.ws_newcompass.WsNewcompassSoap;
 
 // Logging
 import org.slf4j.Logger;
@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 // Misc
 import java.net.URL;
 import java.net.MalformedURLException;
+import javax.xml.ws.WebServiceException;
 
 /**
  * An interceptor that delegates authentication to the DMCC authentication web service,
@@ -37,6 +38,9 @@ import java.net.MalformedURLException;
  * to do it.
  */
 public class DMCCAuthenticationInterceptor extends BaseInterceptor {
+    /** Are we properly initialized? */
+    private boolean initialized = false;
+
     /** Logging for debugging, informational messages… */
     private static final Logger LOG = LoggerFactory.getLogger(DMCCAuthenticationInterceptor.class);
 
@@ -127,6 +131,9 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
                 b.append('0');
             this.checkDigits = b.toString();
             LOG.debug("Created {} zeros for the check digits (ugh)", this.checkDigitLength);
+            this.initialized = true;
+        } catch (WebServiceException ex) {
+            this.initialized = false;
         } catch (MalformedURLException ex) {
             throw new LdapException(ex);
         }
@@ -139,7 +146,7 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
      * @param password The password for the username.
      * @return True if authentic and valid, false if not.
      */
-    public boolean isAuthentic(String username, String password) {
+    public boolean isAuthentic(String username, String password) throws Exception {
         WsNewcompassSoap port = this.soapService.getWsNewcompassSoap12(); // DMCC's port names are stupid.
         String response = port.pwdVerification(username, password, this.checkDigits);
         LOG.debug("DMCC says that for username {} and password [REDACTED] the response is {}", username, response);
@@ -155,6 +162,13 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
      */
     @Override
     public void bind(BindOperationContext bindContext) throws LdapException {
+        // See if we got properly initialized.  If not, no point in trying.
+        if (!this.initialized) {
+            LOG.debug("DMCCAuthenticationInterceptor not initialized, so passing right onto the next interceptor");
+            next(bindContext);
+            return;
+        }
+        
         // TODO: to be really anal retentive, we should check the entire DN and ensure it makes sense
         // for the DMCC to authenticate, on the off chance that "uid=dcrichto,ou=Sales,o=Amazon,c=US"
         // happens to authenticate with our LDAP server.
