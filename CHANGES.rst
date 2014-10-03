@@ -8,6 +8,15 @@ Informatics Center's issue tracker at:
     
 Thanks, Object Oriented Data Technology, for hosting it.
 
+
+1.1.2 — Ontology 1.8
+--------------------
+
+The DMCC published an updated SOAP service to support EDRN Ontology 1.8.  This
+includes no changes to the "pwdVerification" SOAP function, but because this is
+SOAP, we have to rebuild all API stubs.  SOAP sucks.
+
+
 1.1.1 — #&*% the DMCC
 ---------------------
 
