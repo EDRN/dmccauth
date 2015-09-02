@@ -12,14 +12,26 @@ RESERVED. U.S. Government Sponsorship acknowledged.
     <name>EDRN DMCC Authentication for Apache™ Directory Server</name>
     <properties />
     <scm>
-        <connection>scm:svn:http://tumor.jpl.nasa.gov/repo/edrn/security/dmccauth/trunk</connection>
-        <developerConnection>scm:svn:http://tumor.jpl.nasa.gov/repo/edrn/security/dmccauth/trunk</developerConnection>
-        <url>http://tumor.jpl.nasa.gov/vc/svn/edrn/security/dmccauth/trunk</url>
+        <connection>scm:git:https://github.com/EDRN/dmccauth.git</connection>
+        <developerConnection>scm:git:git@github.com:EDRN/dmccauth.git</developerConnection>
+        <url>https://github.com/EDRN/dmccauth</url>
     </scm>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.8.1</version>
+                <configuration>
+                    <tag>${project.artifactId}-${project.version}</tag>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.4</version>
