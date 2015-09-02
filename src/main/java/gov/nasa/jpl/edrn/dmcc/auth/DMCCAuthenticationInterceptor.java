@@ -12,10 +12,10 @@ import org.apache.directory.server.core.api.LdapPrincipal;
 import org.apache.directory.server.core.shared.DefaultCoreSession;
 
 // Apache™ Shared LDAP API
-import org.apache.directory.shared.ldap.model.constants.AuthenticationLevel;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.shared.util.Strings;
 
 // DMCCrap
