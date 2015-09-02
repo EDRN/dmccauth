@@ -9,6 +9,16 @@ Informatics Center's issue tracker at:
 Thanks, Object Oriented Data Technology, for hosting it.
 
 
+1.1.3 — ApacheDS Upgrade
+------------------------
+
+This release makes "dmccauth" compatible with ApacheDS 2.0.0-M19.  Previously,
+it was compatible with 2.0.0-M7.  M7 to M19 should be merely milestone changes
+according to https://directory.apache.org/apacheds/developer-guide.html, but
+the there have been movement of classes and hundreds of changes to the server
+config.ldif, so … no.
+
+
 1.1.2 — Ontology 1.8
 --------------------
 
