@@ -1,9 +1,9 @@
-// Copyright 2012 California Institute of Technology. ALL RIGHTS
+// Copyright 2012–2015 California Institute of Technology. ALL RIGHTS
 // RESERVED. U.S. Government Sponsorship acknowledged.
 
 package gov.nasa.jpl.edrn.dmcc.auth;
 
-import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationException;
+import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 
 /** Exception indicating a problem while trying to authenticate with the DMCC.
  */

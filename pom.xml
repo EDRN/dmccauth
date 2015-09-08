@@ -91,12 +91,12 @@ RESERVED. U.S. Government Sponsorship acknowledged.
         <dependency>
             <groupId>org.apache.directory.shared</groupId>
             <artifactId>shared-ldap-client-api</artifactId>
-            <version>1.0.0-M12</version>
+            <version>1.0.0-M13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.shared</groupId>
             <artifactId>shared-ldap-model</artifactId>
-            <version>1.0.0-M12</version>
+            <version>1.0.0-M13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>

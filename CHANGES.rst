@@ -9,6 +9,12 @@ Informatics Center's issue tracker at:
 Thanks, Object Oriented Data Technology, for hosting it.
 
 
+1.1.4 — More ApacheDS Upgrade
+-----------------------------
+
+Screw ApacheDS.
+
+
 1.1.3 — ApacheDS Upgrade
 ------------------------
 
