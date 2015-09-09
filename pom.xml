@@ -8,7 +8,7 @@ RESERVED. U.S. Government Sponsorship acknowledged.
     <groupId>gov.nasa.jpl.edrn.dmcc</groupId>
     <artifactId>dmccauth</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.5</version>
+    <version>1.1.6-SNAPSHOT</version>
     <name>EDRN DMCC Authentication for Apache™ Directory Server</name>
     <properties />
     <scm>
