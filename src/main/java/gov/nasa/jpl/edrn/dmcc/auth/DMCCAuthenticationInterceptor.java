@@ -16,7 +16,7 @@ import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 
 // DMCCrap
 import org.fhcrc.compass.edrn_ws.ws_newcompass.WsNewcompass;
