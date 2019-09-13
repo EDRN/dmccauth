@@ -124,6 +124,7 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
         super.init(directoryService);
         try {
             this.directoryService = directoryService;
+            LOG.debug("Trying to create SOAP at {}", this.authWebServiceURL);
             this.soapService = new WsNewcompass(new URL(this.authWebServiceURL)); // DMCC's service name is stupid.
             LOG.debug("Created SOAP service {}", this.soapService);
             StringBuffer b = new StringBuffer(this.checkDigitLength);
@@ -133,6 +134,8 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
             LOG.debug("Created {} zeros for the check digits (ugh)", this.checkDigitLength);
             this.initialized = true;
         } catch (WebServiceException ex) {
+            LOG.debug("The exception class is '{}'' and message is '{}'", ex.getClass().getName(), ex.getMessage());
+            LOG.error("DMCCAuthenticationInterceptor got an exception trying to create SOAP interface", ex);
             this.initialized = false;
         } catch (MalformedURLException ex) {
             throw new LdapException(ex);
@@ -179,7 +182,7 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
             if (!rdn.getNormType().equals(this.rdnAttributeType))
                 throw new DMCCAuthenticationException("Can't handle RDN attribute type " + rdn.getNormType() + "; expected "
                     + this.rdnAttributeType);
-            String uid = rdn.getNormValue().getString();
+            String uid = rdn.getValue().toString();
             String password = Strings.utf8ToString(bindContext.getCredentials());
             LOG.debug("Got uid '{}' with password 'NOPE! Not gonna show ya!'", uid);
             if (!this.isAuthentic(uid, password))
