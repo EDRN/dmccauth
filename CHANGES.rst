@@ -8,6 +8,13 @@ Informatics Center's issue tracker at:
     
 Thanks, Object Oriented Data Technology, for hosting it.
 
+1.1.9 — Avoid Unnecessary Hand Washing
+--------------------------------------
+
+In this version we attempt to avoid doing auth calls for ``admin`` or
+``root``. We also work around a problem if the DMCC's SLL certificate
+is bad which would prevent any authentication from working.
+
 
 1.1.5 — Yet More ApacheDS BS
 ----------------------------

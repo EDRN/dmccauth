@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // Misc
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 import javax.xml.ws.WebServiceException;
 
 /**
@@ -150,10 +150,18 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
      * @return True if authentic and valid, false if not.
      */
     public boolean isAuthentic(String username, String password) throws Exception {
-        WsNewcompassSoap port = this.soapService.getWsNewcompassSoap12(); // DMCC's port names are stupid.
-        String response = port.pwdVerification(username, password, this.checkDigits);
-        LOG.debug("DMCC says that for username {} and password [REDACTED] the response is {}", username, response);
-        return "valid".equals(response);
+        try {
+            WsNewcompassSoap port = this.soapService.getWsNewcompassSoap12(); // DMCC's port names are stupid.
+            String response = port.pwdVerification(username, password, this.checkDigits);
+            LOG.debug("DMCC says that for username {} and password [REDACTED] the response is {}", username, response);
+            return "valid".equals(response);
+        } catch (RuntimeException ex) {
+            // These should never be handled
+            throw ex;
+        } catch (Exception ex) {
+            // SSL certificates at the DMCC are dodgy at best; treat as a soft error
+            return false;
+        }
     }
 
     /**
@@ -183,15 +191,21 @@ public class DMCCAuthenticationInterceptor extends BaseInterceptor {
                 throw new DMCCAuthenticationException("Can't handle RDN attribute type " + rdn.getNormType() + "; expected "
                     + this.rdnAttributeType);
             String uid = rdn.getValue().toString();
-            String password = Strings.utf8ToString(bindContext.getCredentials());
-            LOG.debug("Got uid '{}' with password 'NOPE! Not gonna show ya!'", uid);
-            if (!this.isAuthentic(uid, password))
-                throw new DMCCAuthenticationException("Uid '" + uid + "' and password not valid per DMCC");
-            LOG.debug("Guess what: your DMCC username & password are OK!");
-            LdapPrincipal principal = new LdapPrincipal(this.schemaManager, bindContext.getDn(), AuthenticationLevel.SIMPLE);
-            CoreSession session = new DefaultCoreSession(principal, this.directoryService);
-            bindContext.setSession(session);
-            bindContext.setCredentials(null);
+            if (uid.equals("admin") || uid.equals("root")) {
+                // Skip these
+                LOG.debug("Skipping admin and root users; they will never need to be authenticated with SOAP");
+                next(bindContext);
+            } else {
+                String password = Strings.utf8ToString(bindContext.getCredentials());
+                LOG.debug("Got uid '{}' with password 'NOPE! Not gonna show ya!'", uid);
+                if (!this.isAuthentic(uid, password))
+                    throw new DMCCAuthenticationException("Uid '" + uid + "' and password not valid per DMCC");
+                LOG.debug("Guess what: your DMCC username & password are OK!");
+                LdapPrincipal principal = new LdapPrincipal(this.schemaManager, bindContext.getDn(), AuthenticationLevel.SIMPLE);
+                CoreSession session = new DefaultCoreSession(principal, this.directoryService);
+                bindContext.setSession(session);
+                bindContext.setCredentials(null);
+            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
