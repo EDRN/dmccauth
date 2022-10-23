@@ -1,0 +1,30 @@
+{
+   "folders" : [
+      {
+         "file_exclude_patterns" : [
+            "*.sublime-*",
+            "*.tmproj",
+            "*.tgz",
+            "*.log",
+            "*.o",
+            "*.out",
+            "*.so",
+            "*.a",
+            "*.la"
+         ],
+         "folder_exclude_patterns" : [
+            "bin",
+            "include",
+            "var",
+            "src",
+            "lib",
+            "libexec",
+            "sbin",
+            "share",
+            "openldap*",
+            "gsoap*"
+         ],
+         "path" : "."
+      }
+   ]
+}

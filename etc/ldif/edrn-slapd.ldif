@@ -1,0 +1,207 @@
+# OpenLDAP `slapd` Initial Configuration for `dmccauth` Development
+# =================================================================
+#
+# See slapd-config(5) for details on configuration options.
+
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcArgsFile: /home/kelly/dmccauth/var/run/slapd.args
+olcPidFile: /home/kelly/dmccauth/var/run/slapd.pid
+olcIdleTimeout: 3
+
+
+# Dynamically-Loaded Module Support
+# ---------------------------------
+#
+# `dmccauth.la` is our own special overlay.
+
+dn: cn=module,cn=config
+objectClass: olcModuleList
+cn: module
+olcModuleLoad: /home/kelly/dmccauth/dmccauth.la
+olcModuleLoad: /home/kelly/openldap-2.6.3/contrib/slapd-modules/trace/trace.la
+olcModulePath: /usr/local/libexec/openldap
+olcModuleLoad: back_mdb.la
+olcModuleLoad: memberof.la
+
+# olcModuleLoad: auditlog.la
+
+
+# Schema
+# ------
+#
+# Defines the expected structure of objects in the database
+
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+
+# Base Schemata
+# ~~~~~~~~~~~~~
+#
+# For both EDRN and MCL we need the core, the Co-operation and Open Systems Interconnectio in Europe (COSINE),
+# and the Internet-Organizational Person schemata.
+#
+# (Note: here, `include:` is a directive, not an attribute; a blank line must preceed it (not counting comments).)
+
+include: file:///home/kelly/dmccauth/etc/openldap/schema/core.ldif
+include: file:///home/kelly/dmccauth/etc/openldap/schema/cosine.ldif
+include: file:///home/kelly/dmccauth/etc/openldap/schema/inetorgperson.ldif
+
+
+# EDRN-Specific Schema
+# ~~~~~~~~~~~~~~~~~~~~
+#
+# For EDRN-only, we have a custom `objectClass`, namely `edrnPerson`, which is just an `inetOrgPerson` but with
+# a different name. Blame Chris Mattmann.
+
+dn: cn=EDRN Schema,cn=schema,cn=config
+objectclass: olcSchemaConfig
+cn: EDRN Schema
+olcObjectClasses: ( 1.3.6.1.4.1.1306.20.1 NAME 'edrnPerson' DESC 'An EDRN person in the enterprise' SUP inetOrgPerson STRUCTURAL )
+
+
+# Frontend settings
+# -----------------
+#
+# These apply to all databases within the server. This database gets numbered `-1`.
+
+dn: olcDatabase=frontend,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcFrontendConfig
+olcDatabase: frontend
+olcAccess: to * by * write
+
+
+# Configuration Database
+# ----------------------
+#
+# It seems every LDAP server eventually stores its own configuration in a directory tree. Le sigh.
+# This database gets numbered `0`.
+
+dn: olcDatabase=config,cn=config
+objectclass: olcDatabaseConfig
+olcDatabase: {0}config
+olcRootDN: cn=admin,cn=config
+olcRootPW: secret
+
+
+# "Apache DS" Database
+# --------------------
+#
+# This is a fake database that serves to mimic the Apache Directory Server's `ou=system` branch, so we can have
+# the `uid=admin,ou=system` user. This is database number `1`.
+
+dn: olcDatabase=mdb,cn=config
+objectClass: olcDatabaseConfig
+objectclass: olcMdbConfig
+olcDatabase: mdb
+olcSuffix: ou=system
+olcRootDN: uid=admin,ou=system
+olcRootPW: secret
+olcDbDirectory: /home/kelly/dmccauth/var/openldap-data/system
+olcDbIndex: objectClass eq
+olcDbIndex: uid pres,eq
+
+
+# EDRN Branch
+# -----------
+#
+# Finally we get to our real application: the directory of members and groups of the Early Detection Research
+# Network which has the unfortunate suffix of `dc=edrn,dc=jpl,dc=nasa,dc=gov` … oh Chris M, why didn't you consult
+# me all those years ago?
+#
+# This is database number `2`.
+#
+# We cannot repeat the password here because "<olcRootPW> can only be set when rootdn is under suffix"
+
+dn: olcDatabase={2}mdb,cn=config
+objectclass: olcDatabaseConfig
+objectclass: olcMdbConfig
+olcDatabase: {2}mdb
+olcSuffix: dc=edrn,dc=jpl,dc=nasa,dc=gov
+olcRootDN: uid=admin,ou=system
+olcDbDirectory: /home/kelly/dmccauth/var/openldap-data/edrn
+olcDbMaxSize: 134217728
+olcDbIndex: objectClass eq
+olcDbIndex: uid pres,eq
+olcDbIndex: cn,sn pres,eq,approx,sub
+olcDbIndex: memberOf eq
+olcDbIndex: uniqueMember eq
+
+
+# "Member Of" Overlay for EDRN
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dn: olcOverlay={0}memberof,olcDatabase={2}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
+olcOverlay: {0}memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfUniqueNames
+olcMemberOfMemberAD: uniqueMember
+olcMemberOfMemberOfAD: memberOf
+
+
+# "DMCC Authorization" Overlay for EDRN
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dn: olcOverlay={1}dmccauth,olcDatabase={2}mdb,cn=config
+objectClass: olcDmccauthConfig
+olcOverlay: {1}dmccauth
+olcDmccauthFile: /tmp/dmcc.socket
+
+
+# MCL branch
+# ----------
+#
+# For users and groups of the Consortium for Molecular and Cellular Characterization of Screen-Detected Lesions.
+# Thankfully we chose a nice tidy suffix for this: `o=MCL`. This is database number `3`.
+#
+# We cannot repeat the password here because "<olcRootPW> can only be set when rootdn is under suffix"
+# olcRootPW: secret
+
+dn: olcDatabase={3}mdb,cn=config
+objectclass: olcDatabaseConfig
+objectclass: olcMdbConfig
+olcDatabase: {3}mdb
+olcSuffix: o=MCL
+olcRootDN: uid=admin,ou=system
+olcDbDirectory: /home/kelly/dmccauth/var/openldap-data/mcl
+olcDbIndex: objectClass eq
+olcDbIndex: uid pres,eq
+olcDbIndex: cn,sn pres,eq,approx,sub
+
+
+# "Member Of" Overlay for MCL™
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dn: olcOverlay={0}memberof,olcDatabase={3}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
+olcOverlay: {0}memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfUniqueNames
+olcMemberOfMemberAD: uniqueMember
+olcMemberOfMemberOfAD: memberOf
+
+# # 🔮 TODO: delete this:
+# dn: olcOverlay={1}auditlog,olcDatabase={2}mdb,cn=config
+# objectClass: olcAuditlogConfig
+# olcAuditlogFile: /tmp/mcl.log
+
+
+# Monitor Database
+# ----------------
+#
+# Whatever this is!
+
+dn: olcDatabase=monitor,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: monitor
+olcRootDN: cn=config
+olcMonitoring: FALSE
