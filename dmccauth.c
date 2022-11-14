@@ -91,7 +91,7 @@ static int do_write(int fd, char* buf) {
  */
 static int initialize_db(BackendDB* be, ConfigReply* cr) {
     slap_overinst* on = (slap_overinst*) be->bd_info;
-    dmccauth_data* data = ch_malloc(sizeof(dmccauth_data));
+    dmccauth_data* data = ch_calloc(1, sizeof(dmccauth_data));
     on->on_bi.bi_private = data;
     ldap_pvt_thread_mutex_init(&data->dmcc_mutex);
     return 0;
