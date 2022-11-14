@@ -6,7 +6,7 @@ PATH=/usr/local//bin:/usr/local/sbin:${PATH}
 export PATH
 
 [ -d etc/slapd.d ] || mkdir -p etc/slapd.d
-[ -d var/openldap-data ] || mkdir -p var/openldap.data
+[ -d var/openldap-data ] || mkdir -p var/openldap-data
 
 # find etc/slapd.d var/openldap-data -type f -delete
 # sbin/slapadd -n 0 -F etc/slapd.d -l etc/ldif/edrn-slapd.ldif
