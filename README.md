@@ -7,7 +7,7 @@ As an [OpenLDAP overlay](https://www.openldap.org/doc/admin26/overlays.html), th
 
 ## 💽 Installation into Production
 
-To install this software, you need…
+To install this software, you need a patient system administrator who will happily take your own `slapd.ldif` configuration and use it with `slapadd` to initially start the OpenLDAP `slapd` server.
 
 
 ## 🧱 Building the Overlay
@@ -60,6 +60,19 @@ Then build it:
     make clean
     cd ..
     mkdir -p var/openldap-data/system var/openldap-data/edrn var/openldap-data/mcl
+
+JPL sysadmins used:
+
+    ./configure --prefix /usr/local/openldap/2.6.3 \
+        --enable-shared \
+        --enable-dynamic \
+        --with-tls \
+        --with-cyrus-sasl \
+        --enable-slapd \
+        --enable-modules \
+        --enable-overlays=mod
+
+which might work.
 
 The local `var` and `etc/slapd.d` directories are used to hold developer-friendly copies of the directory trees and configuration data.
 
