@@ -19,8 +19,8 @@ olcIdleTimeout: 3
 dn: cn=module,cn=config
 objectClass: olcModuleList
 cn: module
-olcModuleLoad: /home/kelly/dmccauth/dmccauth.la
-olcModuleLoad: /home/kelly/openldap-2.6.3/contrib/slapd-modules/trace/trace.la
+olcModuleLoad: /home/kelly/dmccauth.la
+olcModuleLoad: /home/kelly/openldap/contrib/slapd-modules/trace/trace.la
 olcModulePath: /usr/local/libexec/openldap
 olcModuleLoad: back_mdb.la
 olcModuleLoad: memberof.la
@@ -72,7 +72,7 @@ dn: olcDatabase=frontend,cn=config
 objectClass: olcDatabaseConfig
 objectClass: olcFrontendConfig
 olcDatabase: frontend
-olcAccess: to * by * write
+olcAccess: to * by * manage
 
 
 # Configuration Database
