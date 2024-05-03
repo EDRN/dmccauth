@@ -147,7 +147,6 @@ static int authenticate_with_dmcc(Operation* op, SlapReply* rs) {
         return SLAP_CB_CONTINUE;
     }
 
-
     socket_address.sun_family = AF_UNIX;
     ldap_pvt_thread_mutex_lock(&data->dmcc_mutex);
     if (data->dmcc_socketpath == NULL) {
@@ -160,6 +159,7 @@ static int authenticate_with_dmcc(Operation* op, SlapReply* rs) {
     if (connect(socketnum, (const struct sockaddr*) &socket_address, sizeof(struct sockaddr_un)) == -1) {
         Log(DEBUG_DMCCAUTH, LDAP_LEVEL_ERR, "Cannot connect socket, errno=%d\n", errno);
         ldap_pvt_thread_mutex_unlock(&data->dmcc_mutex);
+	close(socketnum);
         return SLAP_CB_CONTINUE;
     }
 
@@ -169,6 +169,7 @@ static int authenticate_with_dmcc(Operation* op, SlapReply* rs) {
         Log(DEBUG_DMCCAUTH, LDAP_LEVEL_ERR, "Cannot write credentials to socket, errno=%d\n", errno);
         ch_free(message);
         ldap_pvt_thread_mutex_unlock(&data->dmcc_mutex);
+	close(socketnum);
         return SLAP_CB_CONTINUE;
     }
     ch_free(message);
@@ -179,6 +180,7 @@ static int authenticate_with_dmcc(Operation* op, SlapReply* rs) {
         else
             Log(DEBUG_DMCCAUTH, LDAP_LEVEL_INFO, "Got strange response of %d bytes from socket\n", rc);
         ldap_pvt_thread_mutex_unlock(&data->dmcc_mutex);
+	close(socketnum);
         return SLAP_CB_CONTINUE;
     }
     ldap_pvt_thread_mutex_unlock(&data->dmcc_mutex);
@@ -187,8 +189,10 @@ static int authenticate_with_dmcc(Operation* op, SlapReply* rs) {
     if (response == '1') {
         rs->sr_err = LDAP_SUCCESS;
         send_ldap_result(op, rs);
+	close(socketnum);
         return SLAP_CB_BYPASS;
     }
+    close(socketnum);
     return SLAP_CB_CONTINUE;
 }
 
