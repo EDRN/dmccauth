@@ -1,18 +1,18 @@
 # ☎️ DMCC Authentication Overlay
 
-The DMCC Authentication Overlay for [OpenLDAP](https://www.openldap.org/) provides password verification for members of the [Early Detection Research Network](https://edrn.nci.nih.gov/) using the DMCC's antediluvian [SOAP](https://www.infoq.com/articles/rest-soap/) service. These are the so-called "secure site" users, named for EDRN's "secure site" 🤭.
+The DMCC Authentication Overlay for [OpenLDAP](https://www.openldap.org/) provides password verification for members of the [Early Detection Research Network](https://edrn.nci.nih.gov/) using the DMCC's antediluvian [SOAP](https://www.infoq.com/articles/rest-soap/) service. These are the so-called "secure site" users, named for EDRN's "secure site".
 
 As an [OpenLDAP overlay](https://www.openldap.org/doc/admin26/overlays.html), the `dmccauth` overlay provides a "plug-in" that handles authentication for these EDRN "secure site" users. It requires the [JPL EDRN DMCC Password Relay](https://github.com/EDRN/jpl.edrn.dmcc.passwordrelay) in order to function.
 
 
 ## 💽 Installation into Production
 
-To install this software, you need a patient system administrator who will happily take your own `slapd.ldif` configuration and use it with `slapadd` to initially start the OpenLDAP `slapd` server.
+To install this software, you need a system administrator who will happily your own `slapd.ldif` configuration and use it with `slapadd` to initially start the OpenLDAP `slapd` server.
 
 
 ## 🧱 Building the Overlay
 
-Building the DMCC Authentication Overlay requires the source code to OpenLDAP version 2.6 as well as a recent Linux operating system with various essential build tools (including `make`, `gcc`, `libssl`, `libsasl2`) and development headers and libraries. It also requires a dump of the EDRN (and for completeness, the MCL) directory trees from the current EDRN Directory Service.
+Building the DMCC Authentication Overlay requires the source code to OpenLDAP version 2.6 as well as a recent Linux operating system with various essential build tools (including `make`, `gcc`, `libssl`, `libsasl2`) and development headers and libraries. It also requires a dump of the EDRN (and for completeness, the MCL and NIST) directory trees from the current EDRN Directory Service.
 
 
 ### 💩 Dumping the Current Directory Trees
@@ -32,6 +32,17 @@ You'll need to edit this file too and move three entries to the top of the file 
 1. `o=MCL`
 2. `ou=users,o=MCL`
 3. `ou=groups,o=MCL`
+
+Finally, for NIST:
+
+    ldapsearch -x -W -H ldaps://edrn-ds.jpl.nasa.gov -D uid=admin,ou=system \
+        -b o=NIST -s sub '(objectClass=*)' > nist.ldif
+
+You'll need to edit this file too so these entries appear at the top of the file:
+
+1. `o=NIST`
+2. `ou=users,o=NIST`
+3. `ou=groups,o=NIST`
 
 
 ### 🗃 OpenLDAP
